@@ -3,15 +3,14 @@
 	<head>
 		<title>Drone control via rosbridge</title>
 		<style type="text/css"><!--
-body {font:100 1em/1.75 Helvetica,monospace; background:#eee; color:#44A9D1}
+body {font:100 0.875em/1.75 Helvetica,monospace; background:#eee; color:#44A9D1}
 h1 {text-transform:lowercase;font:100 3em/1 Helvetica,monospace; border-bottom:3px solid; }
 h3 {color:#eee;position:absolute; top:-1em; font-weight:100; }
-.air h3 {left:50%;}
 
 #viewer, ol#controls { background:#44A9D1; border-radius:0.06em; font-size:2em; height:10.5em; width:21em; position:relative;margin:auto; padding:0.5em; text-align:center; zoom:1;}
 ol li{ list-style:none;}
 li a {background:#eee;color:#44A9D1; padding:0.15em; margin:0.25em; border-radius:0.15em; }
-li ol {border:1px solid #2880A7;  border-radius:50%; width:20%; margin:1em; padding:0.25em 0.25em 0.25em 2.25em; position:relative; zoom:1; float:left}
+li ol {border:1px solid #2880A7; border-radius:50%; width:20%; margin:1em; padding:0.25em 0.25em 0.25em 2.25em; position:relative; zoom:1; float:left}
 
 .arrows a {width:1.5em; height:1.5em; display:block; margin:0.06em; text-align:center}
 .arrows .l {float:left;margin:2em auto 2em -2em}
@@ -24,7 +23,7 @@ li ol {border:1px solid #2880A7;  border-radius:50%; width:20%; margin:1em; padd
 #spacebar a{ width:97.75%; display:block; clear:both}
 
 ol a:hover, ol a:active {background:#2880A7;}
-ol a:active {text-shadow:-1px -1px 1px #eee; box-shadow:1px 1px 2px #eee}
+ol a:active, ol a:focus {text-shadow:-1px -1px 1px #eee; box-shadow:1px 1px 2px #eee}
 -->
 		</style>
 		<script type="text/javascript" src="ros.js"></script>
@@ -133,8 +132,8 @@ ol a:active {text-shadow:-1px -1px 1px #eee; box-shadow:1px 1px 2px #eee}
 		<p id="countme">test baby, test baby, 1, 2, 3, 4 </p>
 		<ol id="controls">
 			<li id="enter"><a type="button" id="takeoff" title="take off">enter &crarr;</a></li>
-			<li class="ground arrows">
-				<h3>ground</h3>
+			<li class="primary arrows">
+				<!--descriptive title <h3>drive</h3>-->
 				<ol>
 					<li class="l"><a type="button" id="left" title="left">&larr;</a></li>
 					<li class="u"><a type="button" id="forward" " title="forward">&uarr;</a></li>
@@ -142,12 +141,12 @@ ol a:active {text-shadow:-1px -1px 1px #eee; box-shadow:1px 1px 2px #eee}
 					<li class="d"><a type="button" id="backward" title="backward">&darr;</a></li>
 				</ol>
 			</li>
-			<li class="air arrows">
-				<h3>air</h3>
+			<li class="secondary arrows">
+				<!--<h3>descriptive title</h3>-->
 				<ol>
-					<li class="l"><a type="button" id="spinleft" title="spin left">a</a></li>
+					<li class="l"><a type="button" id="spinleft" title="look left">a</a></li>
 					<li class="u"><a type="button" id="ascend" title="ascend">s</a></li>
-					<li class="r"><a type="button" id="spinright" title="spin right">d</a></li>
+					<li class="r"><a type="button" id="spinright" title="look right">d</a></li>
 					<li class="d"><a type="button" id="descend" title="descend">w</a></li>
 				</ol>
 			</li>
