@@ -1,71 +1,87 @@
+<!DOCTYPE html>
 <html>
-<head>
-<title>Drone control via rosbridge</title>
-</head>
-<body>
+	<head>
+		<title>Drone control via rosbridge</title>
+		<style type="text/css"><!--
+body {font:100 1em/1.75 Helvetica,monospace; background:#eee; color:#44A9D1}
+h1 {text-transform:lowercase;font:100 3em/1 Helvetica,monospace; border-bottom:3px solid; }
+h3 {color:#eee;position:absolute; top:-1em; font-weight:100; }
+.air h3 {left:50%;}
 
-<script type="text/javascript" src="ros.js"></script>
-<script type="text/javascript">
-    // This is the turtle to connect to
-    var con = new Bridge("ws://localhost:9090");
+#viewer, ol#controls { background:#44A9D1; border-radius:0.06em; font-size:2em; height:10.5em; width:21em; position:relative;margin:auto; padding:0.5em; text-align:center; zoom:1;}
+ol li{ list-style:none;}
+li a {background:#eee;color:#44A9D1; padding:0.15em; margin:0.25em; border-radius:0.15em; }
+li ol {border:1px solid #2880A7;  border-radius:50%; width:20%; margin:1em; padding:0.25em 0.25em 0.25em 2.25em; position:relative; zoom:1; float:left}
 
-    // send velocity command to the robot
-    function takeoff() {
-        con.publish('/ardrone/takeoff', { });
-    }
+.arrows a {width:1.5em; height:1.5em; display:block; margin:0.06em; text-align:center}
+.arrows .l {float:left;margin:2em auto 2em -2em}
+.arrows .r {float:right; margin:2em 0 2em auto}
+.arrows .u {top:0.25em; position:absolute}
+.arrows .d {bottom:0.25em; position:absolute}
 
-    function land() {
-        con.publish('/ardrone/land', { });
-    }
 
-    function start_moving(keycode) {
-	    console.log("Starting to move, keycode: " + keycode);
-	    if (keycode == 38) {
-		// Forward
-		con.publish('/cmd_vel', {"linear":{"x":1.0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 40) {
-		// Backward
-		con.publish('/cmd_vel', {"linear":{"x":-1.0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 39) {
-		// Spin Left
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":-1.0}});
-	    } else if (keycode == 37) {
-		// Spin Right
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":1.0}});
-	    } else if (keycode == 65) {
-		// Strafe Left
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":1.0,"z":0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 68) {
-		// Strafe Right
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":-1.0,"z":0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 83) {
-		// Descend
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":-1.0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 87) {
-		// Ascend
-		con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":1.0},"angular":{"x":0,"y":0,"z":0}});
-	    } else if (keycode == 13) {
-                takeoff();
-            } else if (keycode == 32) {
-                land();
-            }
+#enter a {position:absolute; right:0.25em; padding-top:5.75em}
+#spacebar a{ width:97.75%; display:block; clear:both}
 
-    }
-
-    function stop_moving(keycode) {
-	    console.log("ELECTRIC Done moving, keycode: " + keycode);
-	    //if (keycode >= 37 && keycode <= 40) {
+ol a:hover, ol a:active {background:#2880A7;}
+ol a:active {text-shadow:-1px -1px 1px #eee; box-shadow:1px 1px 2px #eee}
+-->
+		</style>
+		<script type="text/javascript" src="ros.js"></script>
+		<script type="text/javascript">
+			// This is the turtle to connect to
+			var con = new Bridge("ws://localhost:9090");
+			// send velocity command to the robot
+			function takeoff() {
+			con.publish('/ardrone/takeoff', { });
+			}
+			function land() {
+			con.publish('/ardrone/land', { });
+			}
+			function start_moving(keycode) {
+			console.log("Starting to move, keycode: " + keycode);
+			if (keycode == 38) {
+			// Forward - up arrow 38
+			con.publish('/cmd_vel', {"linear":{"x":1.0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 40) {
+			// Backward - down arrow 40
+			con.publish('/cmd_vel', {"linear":{"x":-1.0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 39) {
+			// Spin Left right arrow	 39
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":-1.0}});
+			} else if (keycode == 37) {
+			// Spin Right left arrow	 37
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":1.0}});
+			} else if (keycode == 65) {
+			// Strafe Left a	 65
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":1.0,"z":0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 68) {
+			// Strafe Right d	 68
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":-1.0,"z":0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 83) {
+			// Descend s	 83
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":-1.0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 87) {
+			// Ascend w	 87
+			con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":1.0},"angular":{"x":0,"y":0,"z":0}});
+			} else if (keycode == 13) {
+			takeoff();
+			} else if (keycode == 32) {
+			land();
+			}
+			}
+			function stop_moving(keycode) {
+			console.log("ELECTRIC Done moving, keycode: " + keycode);
+			//if (keycode >= 37 && keycode <= 40) {
 		con.publish('/cmd_vel', {"linear":{"x":0,"y":0,"z":0},"angular":{"x":0,"y":0,"z":0}});
 	    //}
     }
 
     function OnButtonDown (button,keycode) {
-        button.style.color = "#ff0000";
         document.getElementById("countme").innerHTML = button.value+" "+keycode;
         start_moving(keycode);
     }
     function OnButtonUp (button,keycode) {
-        button.style.color = "#000000";
         document.getElementById("countme").innerHTML = "stop"+" "+keycode;
         stop_moving(keycode);
     }
@@ -108,62 +124,34 @@
         var button_land = document.getElementById ("land");
         addlisteners(button_land,32);
     }
-
-
-</script>
-
-<h1>Drone controller</h1>
-
-Drive your drone by pressing the arrow keys. Take off with the enter key.  Land with the space key.
-
-<p>
-
-<img src="http://localhost:8080/stream?topic=/ardrone/image_raw">
-
-<table border="0">
-<tr>
-<td>
-<input type="button" id="takeoff" value="take off" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="land" value="land" style="width:200px;height:100px;font-size:30" >
-</td>
-<th colspan="2">
-<div id="countme" style="font-size:30;text-align:center">test baby, test baby, 1, 2, 3, 4 </div>
-</th>
-</tr>
-</table>
-<p>
-<table border="0">
-<tr>
-<td>
-<input type="button" id="spinleft" value="spin left" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="forward" value="forward" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="spinright" value="spin right" style="width:200px;height:100px;font-size:30" >...............
-</td>
-<td>
-<input type="button" id="ascend" value="ascend" style="width:200px;height:100px;font-size:30" >
-</td>
-</tr>
-<tr>
-<td>
-<input type="button" id="left" value="left" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="backward" value="backward" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="right" value="right" style="width:200px;height:100px;font-size:30" >
-</td>
-<td>
-<input type="button" id="descend" value="descend" style="width:200px;height:100px;font-size:30" >
-</td>
-</tr>
-</table>
-<p>
-</body>
+		</script>
+	</head>
+	<body>
+		<h1>Drone controller</h1>
+		<p>Drive your drone by pressing the arrow keys. Take off with the enter key.  Land with the space key.</p>
+		<p id="viewer"><img src="http://localhost:8080/stream?topic=/ardrone/image_raw" alt="viewer" /></p>
+		<p id="countme">test baby, test baby, 1, 2, 3, 4 </p>
+		<ol id="controls">
+			<li id="enter"><a type="button" id="takeoff" title="take off">enter &crarr;</a></li>
+			<li class="ground arrows">
+				<h3>ground</h3>
+				<ol>
+					<li class="l"><a type="button" id="left" title="left">&larr;</a></li>
+					<li class="u"><a type="button" id="forward" " title="forward">&uarr;</a></li>
+					<li class="r"><a type="button" id="right" title="right">&rarr;</a></li>
+					<li class="d"><a type="button" id="backward" title="backward">&darr;</a></li>
+				</ol>
+			</li>
+			<li class="air arrows">
+				<h3>air</h3>
+				<ol>
+					<li class="l"><a type="button" id="spinleft" title="spin left">a</a></li>
+					<li class="u"><a type="button" id="ascend" title="ascend">s</a></li>
+					<li class="r"><a type="button" id="spinright" title="spin right">d</a></li>
+					<li class="d"><a type="button" id="descend" title="descend">w</a></li>
+				</ol>
+			</li>
+			<li id="spacebar"><a type="button" id="land" title="land">spacebar land</a></li>
+		</ol>
+	</body>
 </html>
